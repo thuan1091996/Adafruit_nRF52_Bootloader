@@ -202,3 +202,17 @@ pip install intelhex
 
 Make sure that `nrfjprog` is available from the command-line. This binary is
 part of Nordic's nRF5x Command Line Tools.
+
+# Custom-work
+# v0.9.2 
+- Change default bootloader behavior to enter OTA DFU instead of serial DFU
+
+### Build for Xiao Seeed nRF52840 Sense
+```
+make BOARD=xiao_nrf52840_ble_sense all
+```
+
+### Create UF2 for Xiao Seeed nRF52840 Sense bootloader
+```
+python .\uf2conv.py .\bootloader_ota_v001.hex -c -f 0xd663823c
+```
