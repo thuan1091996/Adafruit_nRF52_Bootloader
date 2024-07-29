@@ -27,6 +27,12 @@
 
 #define _PINNUM(port, pin)    ((port)*32 + (pin))
 
+#define OTA_DFU_ON_INVALID_APP  //automatically goes into OTA DFU when no valid application is found
+
+#ifndef OTA_DFU_ON_INVALID_APP
+#define ONLY_OTA_DFU          //never goes into DFU over USB ever, so OTA DFU happens if the application is deleted or if double reset is pressed etc.
+#endif
+
 /*------------------------------------------------------------------*/
 /* LED
  *------------------------------------------------------------------*/

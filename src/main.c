@@ -283,6 +283,13 @@ static void check_dfu_mode(void) {
   } else {
     (*dbl_reset_mem) = 0;
   }
+#ifdef OTA_DFU_ON_INVALID_APP
+  if (!valid_app) _ota_dfu = true;
+#endif
+
+#ifdef ONLY_OTA_DFU
+  _ota_dfu = true;
+#endif
 
   // Enter DFU mode accordingly to input
   if (dfu_start || !valid_app) {
@@ -296,6 +303,9 @@ static void check_dfu_mode(void) {
       usb_init(serial_only_dfu);
     }
 
+#ifdef ONLY_OTA_DFU
+    bootloader_dfu_start(_ota_dfu, 0, false);
+#else
     // Initiate an update of the firmware.
     if (APP_ASKS_FOR_SINGLE_TAP_RESET() || uf2_dfu || serial_only_dfu) {
       // If USB is not enumerated in 3s (eg. because we're running on battery), we restart into app.
@@ -304,6 +314,7 @@ static void check_dfu_mode(void) {
       // No timeout if bootloader requires user action (double-reset).
       bootloader_dfu_start(_ota_dfu, 0, false);
     }
+#endif
 
     if (_ota_dfu) {
       sd_softdevice_disable();
